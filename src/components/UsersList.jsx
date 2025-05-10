@@ -1,14 +1,22 @@
 
 
 
-export const UsersList = () => {
+export const UsersList = ({ users }) => {
     return (
-        <>
-            <p>Listado de usuarios</p>
-            <table>
 
-            </table>
+        <><table className="table table-hover table-striped">
 
-        </>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>username</th>
+                    <th>email</th></th>
+                <th>update</th>
+                <th>remove</th>
+            </tr>
+        </thead><tbody>
+
+            </tbody></>
+        </table>
     )
 }
