@@ -20,7 +20,10 @@ export default (state = [], action) => {
         case 'updateUser':
             return state.map(u => {
                 if (u.id === action.payload.id) {
-                    return action.payload;
+                    return {
+                        ...action.payload,
+                        pasword: u.password
+                    }
                 } else {
                     return u;
                 }

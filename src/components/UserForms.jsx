@@ -11,7 +11,7 @@ export const UserForms = ({ userSelected, handlerAddUser, initialUserForm }) => 
     useEffect(() => {
         setUserForm({
             ...userSelected,
-            //password: '',
+            password: '',
         })
     }, [userSelected]);
 
@@ -25,7 +25,7 @@ export const UserForms = ({ userSelected, handlerAddUser, initialUserForm }) => 
 
     const onSubmit = (e) => {
         e.preventDefault();
-        if(!username || !password || !email) {
+        if(!username || (!password && id === 0) || !email) {
             alert("Please fill in all the fields");
             return;
         }
@@ -42,14 +42,15 @@ export const UserForms = ({ userSelected, handlerAddUser, initialUserForm }) => 
                 value= { username }
                 onChange={ onInputChange }
             />
-            <input
+            {id > 0 || <input
                 className="Form-control my-2 w-100"
                 placeholder="Pasword"
                 type="password"
                 name="password"
                 value= { password }
                 onChange={ onInputChange }
-            />
+            />}
+            
             <input
                 className="Form-control my-2 w-100"
                 placeholder="Emailcom"
