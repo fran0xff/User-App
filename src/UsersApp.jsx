@@ -1,8 +1,10 @@
 
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { useAuth } from './auth/hoohs/useAuth';
 import { LoginPage } from './auth/pages/LoginPage';
 import { Navbar } from './components/layout/Navbar';
 import { UsersPage } from './pages/UsersPage';
+import { UserRoutes } from './routes/UserRoutes';
 
 
 export const UsersApp = () => {
@@ -10,17 +12,21 @@ export const UsersApp = () => {
     const { login, handlerLogin, handlerLogout } = useAuth();
 
     return (
-        <>
+        <Routes>
             {
                 login.isAuth
                     ? (
-                        <>
-                            <Navbar login={ login } handlerLogout={handlerLogout} />
-                            <UsersPage />
-                        </>
+                        <Route path='/*' element={ <UserRoutes
+                        login={login}
+                        handlerLogout={handlerLogout} />} />
                     )
-                    : <LoginPage handlerLogin={handlerLogin} />
+                    : <>
+                        <Route path='/login'
+                            element={<LoginPage
+                                handlerLogin={handlerLogin} />} />
+                        <Route path='/*' element={ <Navigate to="/login" />} />
+                    </>
             }
-        </>
+        </Routes>
     );
 }
