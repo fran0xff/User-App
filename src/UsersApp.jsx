@@ -1,34 +1,26 @@
-import { useReducer, useState } from "react"
-import { UserForms } from "./components/UserForms"
-import { UsersList } from "./components/UsersList"
-import usersReducer from "./reducer/usersReducer";
+
+import { useAuth } from './auth/hoohs/useAuth';
+import { LoginPage } from './auth/pages/LoginPage';
+import { Navbar } from './components/layout/Navbar';
+import { UsersPage } from './pages/UsersPage';
 
 
 export const UsersApp = () => {
 
-    
+    const { login, handlerLogin, handlerLogout } = useAuth();
+
     return (
-        <div className="container my-4">
-            <h2>Users App</h2>
-            <div className="row">
-                <div className="col">
-                    <UserForms
-                        initialUserForm={initialUserForm}
-                        userSelected={userSelected}
-                        handlerAddUser={handlerAddUser}
-                    />
-                </div>
-                <div className="col">
-                    {users.length === 0 ? <div className="alert alert-warning" role="alert" >No users found</div>
-                        :
-                        <UsersList
-                            handlerUserSelectedForm={handlerUserSelectedForm}
-                            handlerDeleteUser={handlerDeleteUser}
-                            users={users}
-                        />
-                    }
-                </div>
-            </div>
-        </div>
-    )
+        <>
+            {
+                login.isAuth
+                    ? (
+                        <>
+                            <Navbar login={ login } handlerLogout={handlerLogout} />
+                            <UsersPage />
+                        </>
+                    )
+                    : <LoginPage handlerLogin={handlerLogin} />
+            }
+        </>
+    );
 }
