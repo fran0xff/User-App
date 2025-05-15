@@ -1,7 +1,11 @@
+import { useContext } from "react";
+import { UserContext } from "../context/UserContext"
 import { UserRow } from "./UserRow"
 
-export const UsersList = ({ handlerUserSelectedForm, handlerRemoveUser, users = [] }) => {
+export const UsersList = () => {
 
+    const { users } = useContext(UserContext);
+    
     return (
         <table className="table table-hover table-striped">
 
@@ -23,8 +27,7 @@ export const UsersList = ({ handlerUserSelectedForm, handlerRemoveUser, users = 
                             id={id}
                             username={username}
                             email={email}
-                            handlerUserSelectedForm={handlerUserSelectedForm}
-                            handlerRemoveUser={handlerRemoveUser} />
+                             />
                     ))
                 }
             </tbody>
