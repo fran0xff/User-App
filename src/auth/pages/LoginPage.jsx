@@ -9,6 +9,7 @@ const initialLoginForm = {
 export const LoginPage = () => {
 
     const { handlerLogin } = useContext(AuthContext);
+    
     const [loginForm, setLoginForm] = useState(initialLoginForm);
     const { username, password } = loginForm;
 

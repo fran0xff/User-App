@@ -1,11 +1,10 @@
-import { useContext } from "react";
+import { useContext } from "react"
 import { UserContext } from "../context/UserContext"
 import { UserRow } from "./UserRow"
 
 export const UsersList = () => {
 
     const { users } = useContext(UserContext);
-    
     return (
         <table className="table table-hover table-striped">
 
@@ -26,8 +25,7 @@ export const UsersList = () => {
                             key={id}
                             id={id}
                             username={username}
-                            email={email}
-                             />
+                            email={email} />
                     ))
                 }
             </tbody>

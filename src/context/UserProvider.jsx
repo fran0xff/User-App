@@ -1,21 +1,22 @@
 import { useUsers } from "../hooks/useUsers";
 import { UserContext } from "./UserContext"
 
-
-
-export const UserProvider = ({ children }) => {
+export const UserProvider = ({children}) => {
 
     const {
         users,
         userSelected,
         initialUserForm,
         visibleForm,
+        errors,
         handlerAddUser,
         handlerRemoveUser,
         handlerUserSelectedForm,
         handlerOpenForm,
         handlerCloseForm,
+        getUsers,
     } = useUsers();
+
     return (
         <UserContext.Provider value={
             {
@@ -23,11 +24,13 @@ export const UserProvider = ({ children }) => {
                 userSelected,
                 initialUserForm,
                 visibleForm,
+                errors,
                 handlerAddUser,
                 handlerRemoveUser,
                 handlerUserSelectedForm,
                 handlerOpenForm,
                 handlerCloseForm,
+                getUsers,
             }
         }>
             {children}

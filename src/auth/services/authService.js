@@ -1,6 +1,4 @@
 
-
-export const loginUser = ( { username, password}) => {
-
-    return  (username === 'admin' && password === '12345') ? true : false;
+export const loginUser = (userLogin) => {
+    return (userLogin.username === 'admin' && userLogin.password === '12345');
 }

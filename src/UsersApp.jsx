@@ -1,10 +1,8 @@
-
+import { useContext } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
+import { AuthContext } from './auth/context/AuthContext';
 import { LoginPage } from './auth/pages/LoginPage';
 import { UserRoutes } from './routes/UserRoutes';
-import { useContext } from 'react';
-import { AuthContext } from './auth/context/AuthContext';
-
 
 export const UsersApp = () => {
 
@@ -14,12 +12,13 @@ export const UsersApp = () => {
             {
                 login.isAuth
                     ? (
-                        <Route path='/*' element={ <UserRoutes />} />
+                        <Route path='/*' element={<UserRoutes />} />
                     )
                     : <>
                         <Route path='/login' element={<LoginPage />} />
-                        <Route path='/*' element={ <Navigate to="/login" />} />
+                        <Route path='/*' element={<Navigate to="/login" /> } />
                     </>
+                    
             }
         </Routes>
     );
