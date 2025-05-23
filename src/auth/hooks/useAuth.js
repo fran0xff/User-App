@@ -21,7 +21,7 @@ export const useAuth = () => {
             const token = response.data.token;
             const claims = JSON.parse(atob(token.split('.')[1]));//  windows.atob(token.split('.')[1]);// Decode the payload of the token
             console.log(claims);
-            const user = { username: claims.username }
+            const user = { username: claims.sub }
             dispatch({
                 type: 'login',
                 payload: {user, isAdmin: claims.isAdmin },
