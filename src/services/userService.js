@@ -9,7 +9,7 @@ const config = () => {
             "Content-Type": "application/json",
         }
     }
-};
+}
 
 export const findAll = async() => {
     try {
@@ -39,7 +39,7 @@ export const update = async({ id, username, email }) => {
             username,
             email,
             // password: 'nothing',
-        } , config());
+        }, config());
     } catch (error) {
         throw error;
     }

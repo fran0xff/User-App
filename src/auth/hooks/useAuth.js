@@ -19,7 +19,7 @@ export const useAuth = () => {
         try {
             const response = await loginUser({ username, password });
             const token = response.data.token;
-            const claims = JSON.parse(atob(token.split('.')[1]));//  windows.atob(token.split('.')[1]);// Decode the payload of the token
+            const claims = JSON.parse(window.atob(token.split('.')[1]));//  windows.atob(token.split('.')[1]);// Decode the payload of the token
             console.log(claims);
             const user = { username: claims.sub }
             dispatch({
@@ -34,9 +34,9 @@ export const useAuth = () => {
             sessionStorage.setItem('token', `Bearer ${token}`);
             navigate('/users');
         } catch(error) {
-            if(error.response.status === 401) {               
+            if(error.response?.status === 401) {               
                 Swal.fire('Error Login', 'Username o password invalidos', 'error');
-            } else if(error.response.status === 403){
+            } else if(error.response?.status === 403){
                  Swal.fire('Error Login', 'No tiene acceso al recurso', 'error');
              } else {
                 throw error;
