@@ -12,6 +12,7 @@ const initialUserForm = {
     username: '',
     password: '',
     email: '',
+    admin: false,
 }
 
 const initialErrors = {
@@ -29,7 +30,7 @@ export const useUsers = () => {
 
     const navigate = useNavigate();
 
-    const { login } = useContext(AuthContext);
+    const { login, handlerLogaut } = useContext(AuthContext);
 
     const getUsers = async () => {
         const result = await findAll();
@@ -82,7 +83,8 @@ export const useUsers = () => {
                 if (error.response.data?.message?.includes('UK_email')) {
                     setErrors({email: 'El email ya existe!'})
                 }
-                
+                } else if (error.response?.status == 401) {
+                    handlerLogaut();   
             } else {
                 throw error;
             }
@@ -102,18 +104,26 @@ export const useUsers = () => {
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Si, eliminar!'
-        }).then((result) => {
+        }).then( async(result) => {
             if (result.isConfirmed) {
-                remove(id);
-                dispatch({
-                    type: 'removeUser',
-                    payload: id,
-                });
-                Swal.fire(
-                    'Usuario Eliminado!',
-                    'El usuario ha sido eliminado con exito!',
-                    'success'
-                )
+                try {
+
+                    await remove(id);
+                    dispatch({
+                        type: 'removeUser',
+                        payload: id,
+                    });
+                    Swal.fire(
+                        'Usuario Eliminado!',
+                        'El usuario ha sido eliminado con exito!',
+                        'success'
+                    );
+                    navigate('/users');
+                } catch (error) {
+                    if (error.response?.status == 401) {
+                        handlerLogaut();
+                    }
+                }
             }
         })
 

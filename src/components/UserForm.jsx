@@ -8,7 +8,9 @@ export const UserForm = ({ userSelected, handlerCloseForm }) => {
     
     const [userForm, setUserForm] = useState(initialUserForm);
 
-    const { id, username, password, email } = userForm;
+    const [checked, setChecked] = useState(userForm.admin);
+
+    const { id, username, password, email, admin } = userForm;
 
     useEffect(() => {
         setUserForm({
@@ -26,6 +28,15 @@ export const UserForm = ({ userSelected, handlerCloseForm }) => {
         })
     }
 
+    const onCheckboxChange = () => {
+        setChecked(checked);
+        setUserForm({
+            ...userForm,
+            admin: checked,
+        }
+        );
+    }
+    
     const onSubmit = (event) => {
         event.preventDefault();
         // if (!username || (!password && id === 0) || !email) {
@@ -81,6 +92,16 @@ export const UserForm = ({ userSelected, handlerCloseForm }) => {
                 value={email}
                 onChange={onInputChange} />
             <p className="text-danger">{errors?.email}</p>
+
+            <div className="mi-3 form-check">
+                <input type="checkbox" 
+                name="admin"
+                className="form-check-input"
+                checked={admin}
+                onChange={onCheckboxChange}
+                />
+
+            </div>
 
             <input type="hidden"
                 name="id"
