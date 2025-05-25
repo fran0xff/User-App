@@ -29,14 +29,14 @@ export const UserForm = ({ userSelected, handlerCloseForm }) => {
     }
 
     const onCheckboxChange = () => {
-        setChecked(checked);
+        setChecked(!checked);
         setUserForm({
             ...userForm,
             admin: checked,
         }
         );
     }
-    
+
     const onSubmit = (event) => {
         event.preventDefault();
         // if (!username || (!password && id === 0) || !email) {
@@ -93,13 +93,14 @@ export const UserForm = ({ userSelected, handlerCloseForm }) => {
                 onChange={onInputChange} />
             <p className="text-danger">{errors?.email}</p>
 
-            <div className="mi-3 form-check">
+            <div className="my-3 form-check">
                 <input type="checkbox" 
                 name="admin"
-                className="form-check-input"
                 checked={admin}
+                className="form-check-input"
                 onChange={onCheckboxChange}
                 />
+                <label className="form-check-label">Admin</label>
 
             </div>
 
