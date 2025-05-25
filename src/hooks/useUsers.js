@@ -33,18 +33,26 @@ export const useUsers = () => {
     const { login, handlerLogaut } = useContext(AuthContext);
 
     const getUsers = async () => {
-        const result = await findAll();
-        console.log(result);
-        dispatch({
-            type: 'loadingUsers',
-            payload: result.data,
-        });
+
+        try {
+
+            const result = await findAll();
+            console.log(result);
+            dispatch({
+                type: 'loadingUsers',
+                payload: result.data,
+            });
+        } catch (error) {
+            if (error.response?.status == 401) {
+                handlerLogaut();
+            }
+        }
     }
 
     const handlerAddUser = async (user) => {
         // console.log(user);
 
-        if(!login.isAdmin) return;
+        if (!login.isAdmin) return;
 
         let response;
         try {
@@ -76,15 +84,15 @@ export const useUsers = () => {
                 setErrors(error.response.data);
             } else if (error.response && error.response.status == 500 &&
                 error.response.data?.message?.includes('constraint')) {
-            
+
                 if (error.response.data?.message?.includes('UK_username')) {
-                    setErrors({username: 'El username ya existe!'})
+                    setErrors({ username: 'El username ya existe!' })
                 }
                 if (error.response.data?.message?.includes('UK_email')) {
-                    setErrors({email: 'El email ya existe!'})
+                    setErrors({ email: 'El email ya existe!' })
                 }
-                } else if (error.response?.status == 401) {
-                    handlerLogaut();   
+            } else if (error.response?.status == 401) {
+                handlerLogaut();
             } else {
                 throw error;
             }
@@ -94,7 +102,7 @@ export const useUsers = () => {
     const handlerRemoveUser = (id) => {
         // console.log(id);
 
-        if(!login.isAdmin) return;
+        if (!login.isAdmin) return;
 
         Swal.fire({
             title: 'Esta seguro que desea eliminar?',
@@ -104,7 +112,7 @@ export const useUsers = () => {
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Si, eliminar!'
-        }).then( async(result) => {
+        }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
 
