@@ -1,40 +1,26 @@
-import { useContext, useReducer, useState } from "react";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { usersReducer } from "../reducers/usersReducer";
 import { findAll, remove, save, update } from "../services/userService";
 import { AuthContext } from "../auth/context/AuthContext";
 import { useDispatch, useSelector } from "react-redux";
 import { 
+    initialUserForm,
     addUser,
     removeUser,
     updateUser,
-    loadingUsers } from "../store/slices/users/usersSlice";
-
-const initialUsers = [];
-
-const initialUserForm = {
-    id: 0,
-    username: '',
-    password: '',
-    email: '',
-    admin: false,
-}
-
-const initialErrors = {
-    username: '',
-    password: '',
-    email: '',
-}
+    loadingUsers,
+    onUserSelectedForm,
+    onOpenForm,
+    onCloseForm,
+    loadingError } from "../store/slices/users/usersSlice";
 
 export const useUsers = () => {
     //const [users, dispatch] = useReducer(usersReducer, initialUsers);
-    const {users} = useSelector((state) => state.users);
+    const { users, errors, userSelected, visibleForm} = useSelector((state) => state.users);
     const dispatch = useDispatch();
-    const [userSelected, setUserSelected] = useState(initialUserForm);
-    const [visibleForm, setVisibleForm] = useState(false);
-
-    const [errors, setErrors] = useState(initialErrors)
+    // const [userSelected, setUserSelected] = useState(initialUserForm);
+    // const [visibleForm, setVisibleForm] = useState(false);
 
     const navigate = useNavigate();
 
@@ -84,15 +70,15 @@ export const useUsers = () => {
             navigate('/users');
         } catch (error) {
             if (error.response && error.response.status == 400) {
-                setErrors(error.response.data);
+                dispatch(loadingError(error.response.data));
             } else if (error.response && error.response.status == 500 &&
                 error.response.data?.message?.includes('constraint')) {
 
                 if (error.response.data?.message?.includes('UK_username')) {
-                    setErrors({ username: 'El username ya existe!' })
+                    dispatch(loadingError({ username: 'El username ya existe!' }));
                 }
                 if (error.response.data?.message?.includes('UK_email')) {
-                    setErrors({ email: 'El email ya existe!' })
+                    dispatch(loadingError({ email: 'El email ya existe!' }));
                 }
             } else if (error.response?.status == 401) {
                 handlerLogaut();
@@ -144,18 +130,22 @@ export const useUsers = () => {
 
     const handlerUserSelectedForm = (user) => {
         // console.log(user)
-        setVisibleForm(true);
-        setUserSelected({ ...user });
+    //     setVisibleForm(true);
+    //     setUserSelected({ ...user });
+        // setErrors(initialErrors);
+        dispatch(onUserSelectedForm({...user }));
     }
 
     const handlerOpenForm = () => {
-        setVisibleForm(true);
+        dispatch(onOpenForm(true));
     }
 
     const handlerCloseForm = () => {
-        setVisibleForm(false);
-        setUserSelected(initialUserForm);
-        setErrors({});
+        // setVisibleForm(false);
+        // setUserSelected(initialUserForm);
+        dispatch(onCloseForm());
+        // reset errors
+        dispatch(loadingError({}));
     }
     return {
         users,
